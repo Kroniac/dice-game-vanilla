@@ -1,4 +1,4 @@
-let scores, roundscore, activePlayer, isGameActive;
+let scores, roundscore, activePlayer, isGameActive, previousScore;
 
 init();
 
@@ -8,21 +8,29 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     //to get a random number between 1 and 6
     dice = Math.floor(Math.random() * 6) + 1;
 
-    //setting the display of dice to block
-    document.querySelector('.dice').style.display = 'block';
+    if (previousScore === 6 && dice === 6) {
+      scores[activePlayer] = 0;
+      document.getElementById('score-' + activePlayer).textContent =
+        scores[activePlayer];
+      nexPlayer();
+    } else {
+      previousScore = dice;
+      //setting the display of dice to block
+      document.querySelector('.dice').style.display = 'block';
 
-    //setting the dice pic acc. to dice number
-    document.querySelector('.dice').src = 'dice-' + dice + '.png';
+      //setting the dice pic acc. to dice number
+      document.querySelector('.dice').src = 'dice-' + dice + '.png';
 
-    //if dice number is not 1
-    if (dice !== 1) {
-      //updating the round score
-      roundScore += dice;
-      //updating the round score in UI
-      document.getElementById(
-        'current-' + activePlayer
-      ).textContent = roundScore;
-    } else nexPlayer();
+      //if dice number is not 1
+      if (dice !== 1) {
+        //updating the round score
+        roundScore += dice;
+        //updating the round score in UI
+        document.getElementById(
+          'current-' + activePlayer
+        ).textContent = roundScore;
+      } else nexPlayer();
+    }
   }
 });
 
@@ -53,6 +61,8 @@ function nexPlayer() {
   //setting roundscore to 0
   roundScore = 0;
 
+  //setting previous score to  0;
+  previousScore = 0;
   //resetting players roundScore to 0 in UI
   document.getElementById('current-' + activePlayer).textContent = roundScore;
 
@@ -81,6 +91,7 @@ document.querySelector('.btn-new').addEventListener('click', function() {
 function init() {
   activePlayer = 0;
   roundScore = 0;
+  previousScore = 0;
   scores = [0, 0];
   isGameActive = true;
   //initializing the scores
