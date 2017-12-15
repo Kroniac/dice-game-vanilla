@@ -43,8 +43,13 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
     document.getElementById('score-' + activePlayer).textContent =
       scores[activePlayer];
 
+    let input = document.querySelector('.final-score').value;
+    let winningScore;
+    if (input) {
+      winningScore = input;
+    } else winningScore = 100;
     //check if player won the game
-    if (scores[activePlayer] >= 10) {
+    if (scores[activePlayer] >= winningScore) {
       //setting the player name to Winner
       document.getElementById('name-' + activePlayer).textContent = 'Winner!!';
       //setting dice-pic to none display
