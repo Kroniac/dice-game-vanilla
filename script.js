@@ -1,4 +1,4 @@
-let scores, roundscore, activePlayer, isGameActive, previousScore;
+let scores, roundscore, activePlayer, isGameActive;
 
 init();
 
@@ -6,25 +6,26 @@ init();
 document.querySelector('.btn-roll').addEventListener('click', function() {
   if (isGameActive) {
     //to get a random number between 1 and 6
-    dice = Math.floor(Math.random() * 6) + 1;
-
-    if (previousScore === 6 && dice === 6) {
+    dice1 = Math.floor(Math.random() * 6) + 1;
+    dice2 = Math.floor(Math.random() * 6) + 1;
+  
+    //setting the dice pic acc. to dice number
+    document.getElementById('dice-1').src = 'dice-' + dice1 + '.png';
+    document.getElementById('dice-2').src = 'dice-' + dice2 + '.png';
+    if (dice1 === 6 && dice2 === 6) {
       scores[activePlayer] = 0;
       document.getElementById('score-' + activePlayer).textContent =
         scores[activePlayer];
       nexPlayer();
     } else {
-      previousScore = dice;
       //setting the display of dice to block
-      document.querySelector('.dice').style.display = 'block';
-
-      //setting the dice pic acc. to dice number
-      document.querySelector('.dice').src = 'dice-' + dice + '.png';
+      document.getElementById('dice-1').style.display = 'block';
+      document.getElementById('dice-2').style.display = 'block';
 
       //if dice number is not 1
-      if (dice !== 1) {
+      if (dice1 !== 1 && dice2 !== 1) {
         //updating the round score
-        roundScore += dice;
+        roundScore += dice1 + dice2;
         //updating the round score in UI
         document.getElementById(
           'current-' + activePlayer
@@ -53,7 +54,8 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
       //setting the player name to Winner
       document.getElementById('name-' + activePlayer).textContent = 'Winner!!';
       //setting dice-pic to none display
-      document.querySelector('.dice').style.display = 'none';
+      document.getElementById('dice-1').style.display = 'none';
+      document.getElementById('dice-2').style.display = 'none';
       document.querySelector('.active').classList.add('winner');
       document.querySelector('.active').classList.remove('active');
       isGameActive = false;
@@ -66,8 +68,6 @@ function nexPlayer() {
   //setting roundscore to 0
   roundScore = 0;
 
-  //setting previous score to  0;
-  previousScore = 0;
   //resetting players roundScore to 0 in UI
   document.getElementById('current-' + activePlayer).textContent = roundScore;
 
@@ -96,7 +96,7 @@ document.querySelector('.btn-new').addEventListener('click', function() {
 function init() {
   activePlayer = 0;
   roundScore = 0;
-  previousScore = 0;
+
   scores = [0, 0];
   isGameActive = true;
   //initializing the scores
@@ -106,7 +106,8 @@ function init() {
   document.getElementById('current-1').textContent = 0;
 
   //setting dice-pic to none display
-  document.querySelector('.dice').style.display = 'none';
+  document.getElementById('dice-1').style.display = 'none';
+  document.getElementById('dice-2').style.display = 'none';
 
   document.querySelector('.player-0-panel').classList.remove('active');
   document.querySelector('.player-1-panel').classList.remove('active');
